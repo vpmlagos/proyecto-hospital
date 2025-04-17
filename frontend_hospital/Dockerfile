@@ -9,11 +9,8 @@ RUN npm install
 # Copiar el resto de los archivos de la aplicación
 COPY . .
 
-# Asegurarse de que npx esté disponible y darle permisos de ejecución a vite
-RUN npm install -g npx && chmod +x node_modules/.bin/vite
-
-# Construir la aplicación con Vite
-RUN npx vite build
+# Ejecutar la construcción de la aplicación con Vite usando npx
+RUN chmod +x node_modules/.bin/vite && npx vite build
 
 # Fase de producción (nginx)
 FROM nginx:stable-alpine
