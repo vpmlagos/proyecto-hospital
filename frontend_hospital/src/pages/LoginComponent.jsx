@@ -38,6 +38,9 @@ const LoginComponent = () => {
         </div>
         <button type="submit" className="btn btn-primary">Entrar</button>
       </form>
+      <div className="mt-3">
+        <p>¿No tienes una cuenta? <a href="/registro" className="btn btn-link">Crea una ahora</a></p>
+      </div>
     </div>
   );
 };

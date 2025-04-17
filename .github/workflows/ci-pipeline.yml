@@ -1,0 +1,54 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Se ejecuta en cada push a la rama principal
+  pull_request:
+    branches:
+      - main  # También se ejecuta en cada pull request a la rama principal
+
+jobs:
+  # Job para backend y frontend con Docker Compose
+  docker:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Paso para chequear el código
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Paso para configurar Docker
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Paso para configurar Docker Compose
+      - name: Set up Docker Compose
+        uses: docker/compose-action@v2
+
+      # Paso para construir los contenedores usando Docker Compose
+      - name: Build Docker containers
+        run: |
+          docker-compose -f docker-compose.yml build
+
+      # Paso para ejecutar los contenedores
+      - name: Start Docker containers
+        run: |
+          docker-compose -f docker-compose.yml up -d
+
+      # Paso para instalar dependencias y ejecutar pruebas en el frontend React
+      - name: Install frontend dependencies and run tests
+        run: |
+          # Instalar las dependencias del frontend
+          docker-compose exec frontend npm install --prefix /frontend_hospital
+          
+          # Instalar las dependencias de prueba
+          docker-compose exec frontend npm install --save-dev @testing-library/react @testing-library/jest-dom @testing-library/user-event jest axios --prefix /frontend_hospital
+
+          # Ejecutar pruebas
+          docker-compose exec frontend npm test --prefix /frontend_hospital -- --ci --silent --coverage
+
+      # Paso para detener los contenedores después de las pruebas
+      - name: Shut down Docker containers
+        run: |
+          docker-compose -f docker-compose.yml down

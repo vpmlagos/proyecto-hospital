@@ -6,6 +6,7 @@ import ContactComponent from './components/ContactComponent';
 import ReservaComponent from './components/ReservaComponent';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import LoginComponent from './pages/LoginComponent.jsx';
+import RegisterPage from './pages/RegisterPage.jsx';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Home />} />           
         <Route path="/contacto" element={<ContactComponent />} />
         <Route path="/login" element={<LoginComponent />} />
+        <Route path="/registro" element={<RegisterPage />} />
         <Route 
           path="/reserva" 
           element={
