@@ -1,11 +1,32 @@
 version: '3.9'
 
 services:
+  backend:
+    build:
+      context: ./backend_hospital
+      dockerfile: Dockerfile
+    container_name: python_backend
+    ports:
+      - "5000:5000"
+    environment:
+      SECRET_KEY: super-secret-key
+      JWT_SECRET_KEY: jwt-secret-key
+    networks:
+      - app-network
+
   frontend:
     build:
-      context: .
+      context: ./frontend_hospital
       dockerfile: Dockerfile
     container_name: react_frontend
     ports:
       - "3000:80"
     restart: unless-stopped
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
