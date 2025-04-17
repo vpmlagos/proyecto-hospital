@@ -46,7 +46,7 @@ jobs:
           docker compose exec frontend npm install --prefix /frontend_hospital
           
           # Instalar las dependencias de prueba
-          docker compose exec frontend npm install --save-dev @testing-library/react @testing-library/jest-dom @testing-library/user-event jest axios --prefix /frontend_hospital
+          # docker compose exec frontend npm install --save-dev @testing-library/react @testing-library/jest-dom @testing-library/user-event jest axios --prefix /frontend_hospital
 
           # Ejecutar pruebas
           docker compose exec frontend npm test --prefix /frontend_hospital -- --ci --silent --coverage
