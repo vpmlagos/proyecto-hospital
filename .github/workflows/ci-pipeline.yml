@@ -22,10 +22,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Paso para configurar Docker Compose
-      #- name: Set up Docker Compose
-      #  uses: docker/compose-action@v2.0.0
-
       # Paso para construir los contenedores usando Docker Compose
       - name: Build Docker containers
         run: |
@@ -36,8 +32,11 @@ jobs:
         run: |
           docker compose -f docker-compose.yml up -d
 
+      # Paso para verificar si Vite está disponible
       - name: Check Vite availability
-        run: docker compose exec frontend npx vite --version
+        run: |
+          # Ejecutar el comando npx vite --version para verificar la instalación de Vite
+          docker compose exec frontend npx vite --version
 
       # Paso para instalar dependencias y ejecutar pruebas en el frontend React
       - name: Install frontend dependencies and run tests
