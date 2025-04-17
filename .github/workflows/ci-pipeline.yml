@@ -23,8 +23,8 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       # Paso para configurar Docker Compose
-      - name: Set up Docker Compose
-        uses: docker/compose-action@v2.0.0
+      #- name: Set up Docker Compose
+      #  uses: docker/compose-action@v2.0.0
 
       # Paso para construir los contenedores usando Docker Compose
       - name: Build Docker containers
