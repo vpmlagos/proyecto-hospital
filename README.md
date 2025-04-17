@@ -1,18 +1,50 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-
+## README ##
 
 npm i bootstrap react-bootstrap
 npm i -D sass
 npm install react-router-dom
 npm install axios
+
+
+### CREACIÓN DOCKERFILE ###
+
+Se crea un dockerfile para la creación del respectivo contenedor, facilitando su portabilidad, todo desde la rama feature-contenedores
+
+FROM node:18 AS builder
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+FROM nginx:stable-alpine
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=builder /app/dist /usr/share/nginx/html
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+
+Y posteriormente se levanta utilizando un archivo YAML:
+
+version: '3.9'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: react_frontend
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+
+
+Utilizando los siguientes comandos:
+
+docker-compose down --volumes
+docker system prune -f --volumes
+docker-compose up --build
+
+Si el navegador muestra una versión antigua fuerza la actualización Ctrl + Shift + R
+
