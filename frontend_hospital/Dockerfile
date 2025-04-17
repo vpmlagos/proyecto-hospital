@@ -6,6 +6,9 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
+# Verificar que npx esté disponible
+RUN npm install -g npx
+
 # Copiar el resto de los archivos de la aplicación
 COPY . .
 
